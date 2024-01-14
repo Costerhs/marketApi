@@ -1,7 +1,11 @@
 import express from "express";
 import * as UserController from './utils/controller/UserController.js'
+import * as PostController from './utils/controller/PostController.js'
 import cors from 'cors'
 import mongoose from "mongoose";
+import { loginValidation, registerValidation } from "./validation.js";
+import checkAuth from "./utils/checkAuth.js";
+import * as FavoriteController from './utils/controller/FavoriteController.js' 
 
 const app = express();
 app.use(express.json());
@@ -17,8 +21,19 @@ app.get('/', (req, res) => {
   res.send('asds');
 })
 
-app.post('/auth/register', UserController.register)
-app.post('/auth/login', UserController.login)
+app.post('/auth/register',registerValidation, UserController.register)
+app.post('/auth/login',loginValidation, UserController.login)
+
+app.post('/post',checkAuth, PostController.post)
+app.get('/post', PostController.getAllPost)
+
+app.patch('/post/favorite',checkAuth, FavoriteController.add)
+app.get('/post/favorite',checkAuth, FavoriteController.getFavorite)
+app.patch('/post/deleteFavorite',checkAuth, FavoriteController.remove)
+
+
+
+
 
 app.listen(3000, () => {
   console.log('start');

@@ -2,6 +2,7 @@ import brcypt from 'bcryptjs';
 import { validationResult } from 'express-validator';
 import userModel from '../../models/UserModel.js';
 import jwt from "jsonwebtoken"; 
+import PostModel from '../../models/PostModel.js';
 
 export const register = async(req,res) => {
     try {
@@ -40,15 +41,16 @@ export const register = async(req,res) => {
     } catch (err){
         console.log(err);
         res.status(500).json({
-          message: 'Не удалось заристрироваться'
+          message: 'Похоже такая почта уже используется. Попробуйте другой'
         })
     }
 };
 
 
+
 export const login = async(req,res) => {
     try {
-    const user = await userModel.findOne({email: req.body.username});
+    const user = await userModel.findOne({email: req.body.email});
     if(!user) {
         return res.status(404).json({
             message: "пользователь не найден"

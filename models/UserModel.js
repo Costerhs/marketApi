@@ -13,7 +13,8 @@ const UserSchema = new mongoose.Schema({
     passwordHash:{
         type: String,
         required:true
-    }
+    },
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
 });
 
 export default mongoose.model("User", UserSchema)
