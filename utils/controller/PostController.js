@@ -3,16 +3,11 @@ import postModel from '../../models/PostModel.js';
 
 export const post = async(req,res) => {
     try {
-        // const errors = validationResult(req);
-
-        // if(!errors.isEmpty()) {
-        //     return res.status(400).json(errors.array());
-        // }
-
         const doc = new postModel({
             title: req.body.title,
             price: req.body.price,
-            userId: req.userId
+            userId: req.userId,
+            image: req.file.originalname
         })
 
         const post = await doc.save();

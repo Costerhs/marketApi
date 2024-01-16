@@ -4,7 +4,7 @@ import PostModel from '../../models/PostModel.js';
 export const getFavorite = async(req,res) => {
     try {
         const user = await userModel.findOne({_id: req.userId});
-        res.json({favorites:user.favorites})
+        res.json(user.favorites)
     }catch (e){
         console.log(err);
         res.status(500).json({
@@ -15,6 +15,8 @@ export const getFavorite = async(req,res) => {
 
 export const add = async (req, res) => {
     try {
+        console.log(req.body);
+        
         const userId = req.userId;
         const user = await userModel.findOne({ _id: userId });
         const postId = req.body.id;

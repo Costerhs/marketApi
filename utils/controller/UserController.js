@@ -6,12 +6,6 @@ import PostModel from '../../models/PostModel.js';
 
 export const register = async(req,res) => {
     try {
-        const errors = validationResult(req);
-
-        if(!errors.isEmpty()) {
-            return res.status(400).json(errors.array());
-        }
-
         const password = req.body.password;
         const salt = await brcypt.genSalt(10);
         const hash = await brcypt.hash(password,salt);
