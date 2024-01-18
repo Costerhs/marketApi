@@ -14,7 +14,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required:true
     },
-    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+    avatar:String,
+    phone_number: Number,
 });
 
 export default mongoose.model("User", UserSchema)

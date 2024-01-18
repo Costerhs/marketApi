@@ -5,7 +5,18 @@ export const registerValidation = [
     body('email', 'Неверный формат почты').isEmail(),
     body('password', 'Пароль должен быть минимум 5 символов').isLength({ min: 5 }),
     body('username', 'Имя должен быть минимум 3 символов').isLength({ min: 3 }),
-    // body('avatarUrl', 'Неверная ссылка на аватарку').optional().isURL(),
+    body('phone_number', 'Имя должен быть минимум 3 символов').isLength({ min: 9 }),
+    body('avatar').optional().custom((value, { req }) => {
+      if (!value) {
+          return true;
+      }
+      try {
+          Buffer.from(value, 'base64');
+          return true;
+      } catch (error) {
+          throw new Error('Неверный формат файла. Ожидается base64');
+      }
+  }),
 ];
 
 export const loginValidation = [

@@ -14,6 +14,8 @@ export const register = async(req,res) => {
             username: req.body.username,
             email: req.body.email,
             passwordHash: hash,
+            phone_number: req.body.phone_number,
+            avatar: req.file?.originalname
         })
 
         const user = await doc.save();
@@ -35,7 +37,8 @@ export const register = async(req,res) => {
     } catch (err){
         console.log(err);
         res.status(500).json({
-          message: 'Похоже такая почта уже используется. Попробуйте другой'
+          message: 'Похоже такая почта уже используется. Попробуйте другой',
+          err
         })
     }
 };

@@ -8,6 +8,8 @@ import checkAuth from "./utils/checkAuth.js";
 import * as FavoriteController from './utils/controller/FavoriteController.js' 
 import multer from "multer";  
 import handleValidationErrors from "./utils/handleValidationErrors.js";
+import { check } from "express-validator";
+import * as CategoryController from "./utils/controller/CategoryController.js";
 
 const app = express();
 app.use(express.json());
@@ -36,24 +38,19 @@ app.get('/', (req, res) => {
   res.send('asds');
 })
 
-app.post('/auth/register',registerValidation,handleValidationErrors, UserController.register)
+app.post('/auth/register',handleValidationErrors,upload.single('avatar'), UserController.register)
+// app.post('/auth/register',registerValidation,handleValidationErrors, UserController.register)
 app.post('/auth/login',loginValidation, UserController.login)
 
 app.post('/post',checkAuth,handleValidationErrors,upload.single('image'), PostController.post)
 app.get('/post', PostController.getAllPost)
-
+app.get('/post/part/:id/:text?', PostController.getSearchedPostByCategory)
 app.patch('/post/favorite',checkAuth, FavoriteController.add)
 app.get('/post/favorite',checkAuth, FavoriteController.getFavorite)
 app.patch('/post/deleteFavorite',checkAuth, FavoriteController.remove)
 
-app.post('/upload',checkAuth,upload.single('image'), (req,res) => {
-  res.json({
-    url:`/uploads/${req.file.originalname}`
-  });
-})
-
-
-
+app.post('/category',checkAuth,CategoryController.create)
+app.get('/category',CategoryController.get)
 app.listen(3000, () => {
   console.log('start');
 })

@@ -15,6 +15,10 @@ const PostSchema = new mongoose.Schema({
     },
     userId:{
         type:String
+    },
+    category:{
+        type:Number,
+        required: true
     }
 });
 
