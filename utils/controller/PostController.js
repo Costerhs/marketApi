@@ -1,5 +1,6 @@
 import { validationResult } from 'express-validator';
 import postModel from '../../models/PostModel.js';
+import UserModel from '../../models/UserModel.js';
 
 export const post = async(req,res) => {
     try {
@@ -8,7 +9,8 @@ export const post = async(req,res) => {
             price: req.body.price,
             userId: req.userId,
             image: req.file.originalname,
-            category: req.body.category
+            category: req.body.category,
+            status:true
         })
 
         const post = await doc.save();
@@ -24,7 +26,7 @@ export const post = async(req,res) => {
 };
 export const getAllPost = async(req,res) => {
     try {
-        const posts = await postModel.find();
+        const posts = await postModel.find({status: true});
         // const posts = await PostModel.find().populate('user').exec();
         // console.log(posts);
         
@@ -43,9 +45,9 @@ export const getSearchedPostByCategory = async(req,res) => {
         let posts;
 
         if(req.params.id != 0) {
-            posts = await postModel.find({ category: req.params.id });
+            posts = await postModel.find({ category: req.params.id, status:true });
         } else {
-            posts = await postModel.find();
+            posts = await postModel.find({status:true });
         }
 
         if (req.params.text) {
@@ -64,6 +66,44 @@ export const getSearchedPostByCategory = async(req,res) => {
     }
 };
 
+export const getUserPost = async (req,res) => {
+    try {
+        const post = await postModel.find({userId:req.params.id})
+        const userLiked = await UserModel.find({})
+        res.json(post)
+
+    }catch (err){
+    console.log(err);
+    res.status(500).json({
+      message: ''
+        })
+        }
+}
+
+export const changeStatus = async (req,res) => {
+    try {
+        const postId = req.params.id;
+        
+        await postModel.updateOne(
+            {
+                _id:postId
+            },
+            {
+                status:req.body.status
+            }
+        );
+        
+        res.json({
+            success:true
+        })
+
+    }catch (err){
+    console.log(err);
+    res.status(500).json({
+      message: 'не удалось сделать запрос. Попробуйте позже'
+        })
+        }
+}
 
 
 

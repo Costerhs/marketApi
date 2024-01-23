@@ -2,7 +2,7 @@ import brcypt from 'bcryptjs';
 import { validationResult } from 'express-validator';
 import userModel from '../../models/UserModel.js';
 import jwt from "jsonwebtoken"; 
-import PostModel from '../../models/PostModel.js';
+import postModel from '../../models/PostModel.js';
 
 export const register = async(req,res) => {
     try {
@@ -80,4 +80,21 @@ export const login = async(req,res) => {
           message: 'неправильный пароль или логин'
         })
     }
+}
+
+
+export const getUser = async (req,res) => {
+    try {
+        const user = await userModel.findOne({_id: req.params.id});
+        const {passwordHash, ...userData} = user._doc
+        
+
+        res.json(userData)
+    }catch (err){
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось сделать запрос. Порпробуйте позже',
+      error:err
+        })
+        }
 }

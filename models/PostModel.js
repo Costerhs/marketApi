@@ -19,7 +19,8 @@ const PostSchema = new mongoose.Schema({
     category:{
         type:Number,
         required: true
-    }
+    },
+    status:Boolean
 });
 
 export default mongoose.model("Post", PostSchema)

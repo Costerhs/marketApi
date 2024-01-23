@@ -39,14 +39,16 @@ app.get('/', (req, res) => {
 })
 
 app.post('/auth/register',handleValidationErrors,upload.single('avatar'), UserController.register)
-// app.post('/auth/register',registerValidation,handleValidationErrors, UserController.register)
 app.post('/auth/login',loginValidation, UserController.login)
+app.get('/user/:id', UserController.getUser)
 
 app.post('/post',checkAuth,handleValidationErrors,upload.single('image'), PostController.post)
 app.get('/post', PostController.getAllPost)
 app.get('/post/part/:id/:text?', PostController.getSearchedPostByCategory)
-app.patch('/post/favorite',checkAuth, FavoriteController.add)
+app.get('/post/user/:id', PostController.getUserPost)
+app.patch('/post/status/:id',checkAuth,PostController.changeStatus)
 app.get('/post/favorite',checkAuth, FavoriteController.getFavorite)
+app.patch('/post/favorite',checkAuth, FavoriteController.add)
 app.patch('/post/deleteFavorite',checkAuth, FavoriteController.remove)
 
 app.post('/category',checkAuth,CategoryController.create)
