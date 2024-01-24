@@ -3,7 +3,7 @@ import * as UserController from './utils/controller/UserController.js'
 import * as PostController from './utils/controller/PostController.js'
 import cors from 'cors'
 import mongoose from "mongoose";
-import { loginValidation, registerValidation } from "./validation.js";
+import { loginValidation, registerValidation, postCreateValidation } from "./validation.js";
 import checkAuth from "./utils/checkAuth.js";
 import * as FavoriteController from './utils/controller/FavoriteController.js' 
 import multer from "multer";  
@@ -42,11 +42,15 @@ app.post('/auth/register',handleValidationErrors,upload.single('avatar'), UserCo
 app.post('/auth/login',loginValidation, UserController.login)
 app.get('/user/:id', UserController.getUser)
 
-app.post('/post',checkAuth,handleValidationErrors,upload.single('image'), PostController.post)
+app.post('/post',checkAuth,handleValidationErrors,upload.single('image'),postCreateValidation, PostController.post)
 app.get('/post', PostController.getAllPost)
 app.get('/post/part/:id/:text?', PostController.getSearchedPostByCategory)
 app.get('/post/user/:id', PostController.getUserPost)
+app.patch('/post/:id', checkAuth,upload.single('image'),PostController.update )
+app.delete('/post/:id', checkAuth,PostController.remove )
+
 app.patch('/post/status/:id',checkAuth,PostController.changeStatus)
+
 app.get('/post/favorite',checkAuth, FavoriteController.getFavorite)
 app.patch('/post/favorite',checkAuth, FavoriteController.add)
 app.patch('/post/deleteFavorite',checkAuth, FavoriteController.remove)

@@ -105,5 +105,74 @@ export const changeStatus = async (req,res) => {
         }
 }
 
+export const update = async (req,res) => {
+    try {
+        const postId = req.params.id;
+        const userId = req.userId
+        
+        const result = await postModel.updateOne(
+            {
+                _id:postId,
+                userId: userId
+            },
+            {
+                title: req.body.title,
+                price: req.body.price,
+                userId: req.userId,
+                image: req.file?.originalname,
+                category: req.body.category
+            }
+        );
+        
+        res.json({
+            success:true
+        })
+
+    }catch (err){
+        console.log(err);
+        res.status(500).json({
+            message: 'не удалось сделать запрос. Попробуйте позже',
+            err:err
+        })
+    }
+}
 
 
+export const remove = async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const userId = req.userId;
+  console.log(userId);
+  
+      const deletedPost = await postModel.findOneAndDelete({
+        _id: postId,
+        userId: userId
+      });
+  
+      if (!deletedPost) {
+        return res.status(404).json({
+          success: false,
+          message: 'Статья не найдена или у вас нет прав для удаления'
+        });
+      }
+      console.log(deletedPost);
+      
+      if (deletedPost.userId.toString() !== userId) {
+        return res.status(403).json({
+          success: false,
+          message: 'У вас нет прав для удаления этой статьи'
+        });
+      }
+  
+      res.json({
+        success: true,
+        message: 'Статья успешно удалена'
+      });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: 'Не удалось удалить статью',
+        err
+      });
+    }
+  };
