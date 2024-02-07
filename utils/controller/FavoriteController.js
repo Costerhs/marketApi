@@ -8,7 +8,7 @@ export const getFavorite = async(req,res) => {
     }catch (e){
         console.log(err);
         res.status(500).json({
-          message: 'Не удалось сделать запрос. Попробуйте позже!'
+          message: 'Не удалось1 сделать запрос. Попробуйте позже!'
         })
     }
 }
@@ -49,7 +49,7 @@ export const add = async (req, res) => {
         console.error(e);
         res.status(500).json({
             success: false,
-            message: 'Не удалось сделать запрос. Попробуйте позже!'
+            message: 'Не удалось2 сделать запрос. Попробуйте позже!'
         });
     }
 };
@@ -57,8 +57,8 @@ export const add = async (req, res) => {
 export const remove = async (req, res) => {
     try {
         const userId = req.userId;
-        const user = await userModel.findOne({ _id: userId });
         const postId = req.body.id;
+        const user = await userModel.findOne({ _id: userId });
         const post = await PostModel.findOne({ _id: postId });
 
         if (!post) {
@@ -90,7 +90,7 @@ export const remove = async (req, res) => {
         console.error(e);
         res.status(500).json({
             success: false,
-            message: 'Не удалось сделать запрос. Попробуйте позже!'
+            message: 'Не удалось3 сделать запрос. Попробуйте позже!'
         });
     }
 };

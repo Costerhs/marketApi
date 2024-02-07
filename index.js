@@ -46,14 +46,17 @@ app.post('/post',checkAuth,handleValidationErrors,upload.single('image'),postCre
 app.get('/post', PostController.getAllPost)
 app.get('/post/part/:id/:text?', PostController.getSearchedPostByCategory)
 app.get('/post/user/:id', PostController.getUserPost)
-app.patch('/post/:id', checkAuth,upload.single('image'),PostController.update )
 app.delete('/post/:id', checkAuth,PostController.remove )
 
-app.patch('/post/status/:id',checkAuth,PostController.changeStatus)
+
+app.patch('/status/:id',checkAuth,PostController.changeStatus)
 
 app.get('/post/favorite',checkAuth, FavoriteController.getFavorite)
 app.patch('/post/favorite',checkAuth, FavoriteController.add)
 app.patch('/post/deleteFavorite',checkAuth, FavoriteController.remove)
+
+app.patch('/post/:id', checkAuth,upload.single('image'),PostController.updates )
+app.get('/post/:id',PostController.getPostById)
 
 app.post('/category',checkAuth,CategoryController.create)
 app.get('/category',CategoryController.get)

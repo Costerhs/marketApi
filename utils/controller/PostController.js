@@ -20,13 +20,30 @@ export const post = async(req,res) => {
     } catch (err){
         console.log(err);
         res.status(500).json({
-          message: 'Не удалось добавить'
+          message: 'Не удалось добавить',
+          err
         })
     }
 };
 export const getAllPost = async(req,res) => {
     try {
         const posts = await postModel.find({status: true});
+        // const posts = await PostModel.find().populate('user').exec();
+        // console.log(posts);
+        
+        res.json({posts});
+        
+    } catch (err){
+        console.log(err);
+        res.status(500).json({
+          message: 'Не удалось получить публикации'
+        })
+    }
+};
+
+export const getPostByCategory = async(req,res) => {
+    try {
+        const posts = await postModel.find({status: true,category:req.body.category});
         // const posts = await PostModel.find().populate('user').exec();
         // console.log(posts);
         
@@ -69,8 +86,14 @@ export const getSearchedPostByCategory = async(req,res) => {
 export const getUserPost = async (req,res) => {
     try {
         const post = await postModel.find({userId:req.params.id})
-        const userLiked = await UserModel.find({})
-        res.json(post)
+        const activePost = post.filter(el => el.status == true)
+        const inactivePost = post.filter(el => el.status == false)
+        console.log(post);
+        
+        res.json({
+            activePost:activePost,
+            inactivePost: inactivePost
+        })
 
     }catch (err){
     console.log(err);
@@ -100,17 +123,19 @@ export const changeStatus = async (req,res) => {
     }catch (err){
     console.log(err);
     res.status(500).json({
-      message: 'не удалось сделать запрос. Попробуйте позже'
+      message: 'не удалось4 сделать запрос. Попробуйте позже'
         })
         }
 }
 
-export const update = async (req,res) => {
+export const updates = async (req,res) => {
+    console.log('update postContrller');
+    
     try {
         const postId = req.params.id;
         const userId = req.userId
         
-        const result = await postModel.updateOne(
+        await postModel.updateOne(
             {
                 _id:postId,
                 userId: userId
@@ -118,7 +143,6 @@ export const update = async (req,res) => {
             {
                 title: req.body.title,
                 price: req.body.price,
-                userId: req.userId,
                 image: req.file?.originalname,
                 category: req.body.category
             }
@@ -129,9 +153,9 @@ export const update = async (req,res) => {
         })
 
     }catch (err){
-        console.log(err);
+        // console.log(err);
         res.status(500).json({
-            message: 'не удалось сделать запрос. Попробуйте позже',
+            message: 'не удалось5 сделать запрос. Попробуйте позже',
             err:err
         })
     }
@@ -176,3 +200,25 @@ export const remove = async (req, res) => {
       });
     }
   };
+
+export const getPostById = async (req,res) => {
+    try {
+        const postId = req.params.id;
+        const post = await postModel.findOne({_id: postId});
+        const count = await UserModel.countDocuments({ favorites: postId });
+        const userData = await UserModel.findOne({_id:post.userId})
+
+        res.json({
+            post:post,
+            favoriteCount:count,
+            userData:userData
+        })
+        
+
+    }catch (err){
+    console.log(err);
+    res.status(500).json({
+      message: 'не удалось8 сделать запрос попробуйте позже'
+        })
+        }
+}
