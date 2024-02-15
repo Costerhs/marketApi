@@ -42,15 +42,19 @@ app.post('/auth/register',handleValidationErrors,upload.single('avatar'), UserCo
 app.post('/auth/login',loginValidation, UserController.login)
 app.get('/user/:id', UserController.getUser)
 
-app.post('/post',checkAuth,handleValidationErrors,upload.single('image'),postCreateValidation, PostController.post)
+// app.post('/post',checkAuth,handleValidationErrors,upload.array('images'),postCreateValidation, PostController.post)
+app.post('/post',checkAuth,handleValidationErrors,upload.array('images'),postCreateValidation, PostController.post)
 app.get('/post', PostController.getAllPost)
 app.get('/post/part/:id/:text?', PostController.getSearchedPostByCategory)
 app.get('/post/user/:id', PostController.getUserPost)
+app.get('/post/myPost/',checkAuth, PostController.getMyPost)
+
 app.delete('/post/:id', checkAuth,PostController.remove )
 
 
 app.patch('/status/:id',checkAuth,PostController.changeStatus)
 
+//favorite
 app.get('/post/favorite',checkAuth, FavoriteController.getFavorite)
 app.patch('/post/favorite',checkAuth, FavoriteController.add)
 app.patch('/post/deleteFavorite',checkAuth, FavoriteController.remove)

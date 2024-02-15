@@ -4,19 +4,21 @@ import UserModel from '../../models/UserModel.js';
 
 export const post = async(req,res) => {
     try {
+        const imagesName = req.files.map(el => el.originalname)  
         const doc = new postModel({
             title: req.body.title,
             price: req.body.price,
             userId: req.userId,
-            image: req.file.originalname,
+            images: imagesName,
             category: req.body.category,
             status:true
         })
+        console.log(doc);
 
         const post = await doc.save();
         
         res.json({post});
-        
+        // 
     } catch (err){
         console.log(err);
         res.status(500).json({
@@ -102,6 +104,18 @@ export const getUserPost = async (req,res) => {
         })
         }
 }
+export const getMyPost = async (req,res) => {
+    try {
+        const post = await postModel.find({userId:req.userId})
+        res.json(post)
+
+    }catch (err){
+    console.log(err);
+    res.status(500).json({
+      message: ''
+        })
+        }
+}
 
 export const changeStatus = async (req,res) => {
     try {
@@ -143,7 +157,7 @@ export const updates = async (req,res) => {
             {
                 title: req.body.title,
                 price: req.body.price,
-                image: req.file?.originalname,
+                image: req.file.originalname,
                 category: req.body.category
             }
         );
@@ -207,11 +221,20 @@ export const getPostById = async (req,res) => {
         const post = await postModel.findOne({_id: postId});
         const count = await UserModel.countDocuments({ favorites: postId });
         const userData = await UserModel.findOne({_id:post.userId})
+        const similarPosts = await postModel.find({
+            category: post.category,
+            _id: { $ne: postId } // Исключить текущий пост
+        });
+
+        const detailPostData = {
+            post:post,
+            userData:userData
+        }
 
         res.json({
-            post:post,
+            post:detailPostData,
             favoriteCount:count,
-            userData:userData
+            similarPosts: similarPosts
         })
         
 
@@ -220,5 +243,18 @@ export const getPostById = async (req,res) => {
     res.status(500).json({
       message: 'не удалось8 сделать запрос попробуйте позже'
         })
-        }
+    }
 }
+
+// export const getSimilarPost = (req,res) => {
+//     try {
+//     const postId = req.params.id;
+//     const posts = await postModel.findOne({category:})
+//     const posts = await postModel.findOne({category:postCategory});
+//     }catch (err){
+//     console.log(err);
+//     res.status(500).json({
+//         message: 'не удалось8 сделать запрос попробуйте позже'
+//         })
+//         }
+// }
