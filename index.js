@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 app.post('/auth/register',handleValidationErrors,upload.single('avatar'), UserController.register)
 app.post('/auth/login',loginValidation, UserController.login)
 app.get('/user/:id', UserController.getUser)
-
+//
 // app.post('/post',checkAuth,handleValidationErrors,upload.array('images'),postCreateValidation, PostController.post)
 app.post('/post',checkAuth,handleValidationErrors,upload.array('images'),postCreateValidation, PostController.post)
 app.get('/post', PostController.getAllPost)
