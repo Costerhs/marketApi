@@ -10,6 +10,8 @@ import multer from "multer";
 import handleValidationErrors from "./utils/handleValidationErrors.js";
 import { check } from "express-validator";
 import * as CategoryController from "./utils/controller/CategoryController.js";
+import fs from 'fs'
+import path from "path";
 
 const app = express();
 app.use(express.json());
@@ -24,7 +26,15 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-
+app.get('/view-uploads', (req, res) => {
+  // Передаем в ответе список файлов в папке uploads
+  fs.readdir(path.join('./uploads'), (err, files) => {
+    if (err) {
+      return res.status(500).send('Ошибка чтения содержимого папки uploads');
+    }
+    res.send(files);
+  });
+});
 const upload = multer({storage});
 
 
