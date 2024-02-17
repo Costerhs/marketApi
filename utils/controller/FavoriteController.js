@@ -8,7 +8,8 @@ export const getFavorite = async(req,res) => {
     }catch (e){
         console.log(err);
         res.status(500).json({
-          message: 'Не удалось1 сделать запрос. Попробуйте позже!'
+          message: 'Не удалось1 сделать запрос. Попробуйте позже!',
+          err:err
         })
     }
 }
@@ -49,7 +50,8 @@ export const add = async (req, res) => {
         console.error(e);
         res.status(500).json({
             success: false,
-            message: 'Не удалось2 сделать запрос. Попробуйте позже!'
+            message: 'Не удалось2 сделать запрос. Попробуйте позже!',
+            err:err
         });
     }
 };
@@ -90,7 +92,8 @@ export const remove = async (req, res) => {
         console.error(e);
         res.status(500).json({
             success: false,
-            message: 'Не удалось3 сделать запрос. Попробуйте позже!'
+            message: 'Не удалось3 сделать запрос. Попробуйте позже!',
+            err:err
         });
     }
 };

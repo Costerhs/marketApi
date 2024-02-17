@@ -38,7 +38,7 @@ export const register = async(req,res) => {
         console.log(err);
         res.status(500).json({
           message: 'Похоже такая почта уже используется. Попробуйте другой',
-          err
+          err:err
         })
     }
 };
@@ -77,7 +77,8 @@ export const login = async(req,res) => {
     } catch (err){
         console.log(err);
         res.status(500).json({
-          message: 'неправильный пароль или логин'
+          message: 'неправильный пароль или логин',
+          err:err
         })
     }
 }

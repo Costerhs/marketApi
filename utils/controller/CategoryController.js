@@ -13,7 +13,8 @@ export const create = async(req,res) => {
     } catch (err){
         console.log(err);
         res.status(500).json({
-          message: 'Не удалось добавить категорию'
+          message: 'Не удалось добавить категорию',
+          err:err
         })
     }
 }
@@ -25,7 +26,8 @@ export const get = async(req,res) => {
     } catch (err){
         console.log(err);
         res.status(500).json({
-          message: 'Не удалось добавить категорию'
+          message: 'Не удалось добавить категорию',
+          err:err
         })
     }
 }

@@ -38,7 +38,8 @@ export const getAllPost = async(req,res) => {
     } catch (err){
         console.log(err);
         res.status(500).json({
-          message: 'Не удалось получить публикации'
+          message: 'Не удалось получить публикации',
+          err:err
         })
     }
 };
@@ -54,7 +55,8 @@ export const getPostByCategory = async(req,res) => {
     } catch (err){
         console.log(err);
         res.status(500).json({
-          message: 'Не удалось получить публикации'
+          message: 'Не удалось получить публикации',
+          err:err
         })
     }
 };
@@ -80,7 +82,8 @@ export const getSearchedPostByCategory = async(req,res) => {
     } catch (err){
         console.log(err);
         res.status(500).json({
-          message: 'Не удалось получить публикации'
+          message: 'Не удалось получить публикации',
+          err:err
         })
     }
 };
@@ -100,7 +103,8 @@ export const getUserPost = async (req,res) => {
     }catch (err){
     console.log(err);
     res.status(500).json({
-      message: ''
+      message: '',
+      err:err
         })
         }
 }
@@ -112,7 +116,8 @@ export const getMyPost = async (req,res) => {
     }catch (err){
     console.log(err);
     res.status(500).json({
-      message: ''
+      message: '',
+      err:err
         })
         }
 }
@@ -137,7 +142,8 @@ export const changeStatus = async (req,res) => {
     }catch (err){
     console.log(err);
     res.status(500).json({
-      message: 'не удалось4 сделать запрос. Попробуйте позже'
+      message: 'не удалось4 сделать запрос. Попробуйте позже',
+      err:err
         })
         }
 }
@@ -241,7 +247,8 @@ export const getPostById = async (req,res) => {
     }catch (err){
     console.log(err);
     res.status(500).json({
-      message: 'не удалось8 сделать запрос попробуйте позже'
+      message: 'не удалось8 сделать запрос попробуйте позже',
+      err:err
         })
     }
 }
