@@ -154,7 +154,7 @@ export const updates = async (req,res) => {
     try {
         const postId = req.params.id;
         const userId = req.userId
-        
+        const imagesName = req.files?.map(el => el.originalname);
         await postModel.updateOne(
             {
                 _id:postId,
@@ -163,8 +163,10 @@ export const updates = async (req,res) => {
             {
                 title: req.body.title,
                 price: req.body.price,
-                image: req.file.originalname,
-                category: req.body.category
+                userId: req.userId,
+                images: imagesName,
+                category: req.body.category,
+                status:true
             }
         );
         
